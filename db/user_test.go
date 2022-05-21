@@ -26,9 +26,8 @@ func TestUserAdd(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	//rand.Seed(int64(time.Now().Nanosecond()))
 	u := &defs.User{
-		Email:      fmt.Sprintf("team@gorust.net"),
+		Email:      fmt.Sprintf("foo@bar.com"),
 		Password:   p,
 		Permission: defs.UserPermissionSysGenerateAndCustomizeUrl,
 		Status:     defs.UserStatusNormal,

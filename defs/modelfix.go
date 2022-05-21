@@ -14,11 +14,7 @@ func (u *User) FixFields() {
 func (u *Url) FixFields() {
 	str.FixLenRef(&u.ID, 6)
 	str.FixLenRef(&u.Url, 255)
-}
-
-func (uu *UserUrl) FixFields() {
-	str.FixLenRef(&uu.UrlID, 6)
-	str.FixLenRef(&uu.Password, 60)
+	str.FixLenRef(&u.Password, 60)
 }
 
 func (uv *UrlVisit) FixFields() {
@@ -29,6 +25,5 @@ func (uv *UrlVisit) FixFields() {
 var (
 	_ ModelFixer = &User{}
 	_ ModelFixer = &Url{}
-	_ ModelFixer = &UserUrl{}
 	_ ModelFixer = &UrlVisit{}
 )
