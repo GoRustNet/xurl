@@ -26,15 +26,15 @@ func Init(cfg *conf.PgConfig) (err error) {
 }
 
 type Modeler interface {
-	defs.User | defs.Url
+	defs.User | defs.Url | defs.UserUrlVisitLiteView | defs.UserUrlLiteView
 }
 
 type Pagination[T Modeler] struct {
-	Page        int
-	PageSize    int
-	RecordTotal int
-	PageTotal   int
-	Data        []*T
+	Page        int  `json:"page"`
+	PageSize    int  `json:"page_size"`
+	RecordTotal int  `json:"record_total"`
+	PageTotal   int  `json:"page_total"`
+	Data        []*T `json:"data,omitempty"`
 }
 
 func NewPagination[T Modeler](page, pageSize, recordTotal int, data []*T) *Pagination[T] {
@@ -77,28 +77,19 @@ func Paginate[T Modeler](selc *Select, page int, params ...interface{}) (*Pagina
 	return PaginateSpecifyCount[T](selc, selc.ToCount(), page, params...)
 }
 
-func CountWithQueryer(queryer sqlx.Queryer, selc *Select, params ...interface{}) (int, error) {
-	if queryer == nil {
-		queryer = db
-	}
+func Count(selc *Select, params ...interface{}) (int, error) {
+	sqlstr := selc.Build()
 	var count int
-	if err := sqlx.Get(queryer, &count, selc.Build(), params...); err != nil {
+	if err := db.Get(&count, sqlstr, params...); err != nil {
 		return 0, err
 	}
 	return count, nil
 }
-func Count(selc *Select, params ...interface{}) (int, error) {
-	return CountWithQueryer(db, selc, params...)
-}
 
-func ExistsWithQueryer(queryer sqlx.Queryer, selc *Select, params ...interface{}) (bool, error) {
-	count, err := CountWithQueryer(queryer, selc, params...)
+func Exists(selc *Select, params ...interface{}) (bool, error) {
+	c, err := Count(selc, params...)
 	if err != nil {
 		return false, err
 	}
-	return count > 0, nil
-}
-
-func Exists(selc *Select, params ...interface{}) (bool, error) {
-	return ExistsWithQueryer(db, selc, params...)
+	return c > 0, nil
 }

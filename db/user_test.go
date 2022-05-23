@@ -27,7 +27,7 @@ func TestUserAdd(t *testing.T) {
 		t.Fatal(err)
 	}
 	u := &defs.User{
-		Email:      fmt.Sprintf("foo@bar.com"),
+		Email:      fmt.Sprintf("team@gorust.net"),
 		Password:   p,
 		Permission: defs.UserPermissionSysGenerateAndCustomizeUrl,
 		Status:     defs.UserStatusNormal,

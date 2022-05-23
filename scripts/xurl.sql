@@ -38,3 +38,14 @@ INNER JOIN
 users AS u
 ON ur.user_id=u.id;
 
+CREATE VIEW v_user_url_visits AS
+SELECT 
+    u.url_id, url, is_customize, is_protected, protected_password, u.dateline, url_is_del, user_id,email, user_is_del, visit,
+    v.id AS visit_id, ip, user_agent, v.dateline AS visit_dateline
+FROM
+    v_user_urls AS u
+INNER JOIN
+    url_visits AS v
+ON 
+    v.url_id = u.url_id;
+

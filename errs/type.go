@@ -12,6 +12,9 @@ const (
 	TypeBcrypt
 	TypeNotExists
 	TypeShortUrl
+	TypeFormBind
+	TypeInvalidParam
+	TypeParse
 )
 
 func DbError(cause error) *Error {
@@ -46,4 +49,13 @@ func NotExistsOrDbError(cause error, msgs ...string) *Error {
 }
 func ShortUrlError(cause error) *Error {
 	return FromCause(TypeShortUrl, cause)
+}
+func FormBindError(cause error) *Error {
+	return FromCause(TypeFormBind, cause)
+}
+func InvalidParam(msgs ...string) *Error {
+	return FromOptStrWithType(TypeInvalidParam, msgs...)
+}
+func ParseError(cause error) *Error {
+	return FromCause(TypeParse, cause)
 }
